@@ -88,9 +88,14 @@ const CardList = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.intro}>
-        <h1 className={styles.title}>Blueprint Digital x Batoul Alkarim</h1>
-        <p className={styles.subTitle}>Software Apprentice Challenge</p>
+      <div className={styles.videoContainer}>
+        <div className={styles.intro}>
+          <h1 className={styles.title}>Blueprint Digital x Batoul Alkarim</h1>
+          <p className={styles.subTitle}>Software Apprentice Challenge</p>
+        </div>
+        <video loop autoPlay muted id="video" className={styles.bgVideo}>
+          <source src="/blueprint-bg.mp4" type="video/mp4" />
+        </video>
       </div>
       <div className={styles.content}>
         <div className={styles.searchAndSort}>
