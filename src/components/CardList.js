@@ -63,9 +63,8 @@ const CardList = () => {
       setSortedAds(adsWithResults);
     }
   }, [ads]);
-
   const filtered = useMemo(() => {
-    return allStandardizedAds
+    return sortedAds
       .filter((item) =>
         item.campaign.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -91,7 +90,6 @@ const CardList = () => {
       <button onClick={() => setSort("asc")}>Sort by Spend (Asc)</button>
       <button onClick={() => setSort("desc")}>Sort by Spend (Desc)</button>
       <button onClick={() => setSort("none")}>Clear Sorting</button>
-      {/* {sortedAds.map((ad, index) => ( */}
       {filtered.map((ad, index) => (
         <Card ad={ad} key={index} />
       ))}
