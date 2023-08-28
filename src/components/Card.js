@@ -1,17 +1,30 @@
 import React from "react";
+import styles from "../styles/Card.module.scss";
 
 const Card = ({ ad }) => {
   return (
-    <div>
-      <div>
-        <p>{ad.campaign}</p>
-        <p>{ad.adSet}</p>
-        <p>{ad.creative}</p>
-        <p>{ad.spend}</p>
-        <p>{ad.impressions}</p>
-        <p>{ad.clicks}</p>
-        <p>{ad.results}</p>
-      </div>
+    <div className={styles.container}>
+      <p className={styles.text}>
+        <strong>Campaign:</strong> {ad.campaign}
+      </p>
+      <p className={styles.text}>
+        <strong>AdSet:</strong> {ad.adSet}
+      </p>
+      <p className={styles.text}>
+        <strong>Creative:</strong> {ad.creative}
+      </p>
+      <p className={styles.text}>
+        <strong>Spend:</strong> {ad.spend}
+      </p>
+      <p className={styles.text}>
+        <strong>Impression:</strong> {ad.impressions}
+      </p>
+      <p className={styles.text}>
+        <strong>Clicks:</strong> {ad.clicks}
+      </p>
+      <p className={styles.text}>
+        <strong>Results:</strong> {ad.results}
+      </p>
     </div>
   );
 };

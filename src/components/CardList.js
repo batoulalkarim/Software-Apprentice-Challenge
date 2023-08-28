@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styles from "../styles/CardList.module.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 
 const CardList = () => {
@@ -63,36 +63,65 @@ const CardList = () => {
       setSortedAds(adsWithResults);
     }
   }, [ads]);
+
+  //any filtering action is handled here
   const filtered = useMemo(() => {
-    return sortedAds
-      .filter((item) =>
-        item.campaign.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      .sort((a, b) => {
-        if (sort === "asc") {
-          return a.spend - b.spend;
-        } else if (sort === "desc") {
-          return b.spend - a.spend;
-        } else {
-          return 0;
-        }
-      });
+    //returning sortedAds to include google analytics
+    //if its text based it's handled here
+    return (
+      sortedAds
+        .filter((item) =>
+          item.campaign.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        //if its asc vs desc it's handled here (spend param)
+        .sort((a, b) => {
+          if (sort === "asc") {
+            return a.spend - b.spend;
+          } else if (sort === "desc") {
+            return b.spend - a.spend;
+          } else {
+            return 0;
+          }
+        })
+    );
   }, [searchTerm, allStandardizedAds, sort]);
 
   return (
-    <div className="app">
-      <input
-        type="text"
-        placeholder="Search by campaign name"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button onClick={() => setSort("asc")}>Sort by Spend (Asc)</button>
-      <button onClick={() => setSort("desc")}>Sort by Spend (Desc)</button>
-      <button onClick={() => setSort("none")}>Clear Sorting</button>
-      {filtered.map((ad, index) => (
-        <Card ad={ad} key={index} />
-      ))}
+    <div className={styles.container}>
+      <div className={styles.intro}>
+        <h1 className={styles.title}>Blueprint Digital x Batoul Alkarim</h1>
+        <p className={styles.subTitle}>Software Apprentice Challenge</p>
+      </div>
+      <div className={styles.content}>
+        <div className={styles.searchAndSort}>
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="Search by Campaign Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className={styles.buttonContainer}>
+            <p>Sort by Spend:</p>
+            <div className={styles.buttons}>
+              <button className={styles.button} onClick={() => setSort("asc")}>
+                Asc
+              </button>
+              <button className={styles.button} onClick={() => setSort("desc")}>
+                Desc
+              </button>
+              <button className={styles.button} onClick={() => setSort("none")}>
+                Clear Sorting
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className={styles.cardsContainer}>
+          {filtered.map((ad, index) => (
+            <Card ad={ad} key={index} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,14 @@
+.container {
+  border: 2px solid #044ed2;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: flex-start;
+  padding: 10px;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 10px 8px 6px -6px #044ed2;
+  }
+}
