@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "../styles/CardList.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Card from "./Card";
 
 const CardList = () => {
   const [ads, setAds] = useState([]);
   const [sortedAds, setSortedAds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sort, setSort] = useState(""); // Values can be asc, desc, none
   const [allStandardizedAds, setAllStandardizedAds] = useState([]);
 
   useEffect(() => {
@@ -63,28 +64,22 @@ const CardList = () => {
     }
   }, [ads]);
 
-  const sortAds = (order) => {
-    const sorted = [...sortedAds];
-    sorted.sort((a, b) =>
-      order === "asc" ? a.spend - b.spend : b.spend - a.spend
-    );
-    setSortedAds(sorted);
-  };
+  const filtered = useMemo(() => {
+    return allStandardizedAds
+      .filter((item) =>
+        item.campaign.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sort === "asc") {
+          return a.spend - b.spend;
+        } else if (sort === "desc") {
+          return b.spend - a.spend;
+        } else {
+          return 0;
+        }
+      });
+  }, [searchTerm, allStandardizedAds, sort]);
 
-  const clearSorting = () => {
-    setSortedAds(allStandardizedAds);
-  };
-
-  const searchAds = () => {
-    const searchTermLower = searchTerm.toLowerCase();
-    const filteredAds = sortedAds.filter((ad) => {
-      const campaignLower = ad.campaign.toLowerCase();
-      return campaignLower.includes(searchTermLower);
-    });
-    setSortedAds(filteredAds);
-  };
-
-  //   console.log("facebook", ads.facebook_ads);
   return (
     <div className="app">
       <input
@@ -93,11 +88,11 @@ const CardList = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button onClick={searchAds}>Search</button>
-      <button onClick={() => sortAds("asc")}>Sort by Spend (Asc)</button>
-      <button onClick={() => sortAds("desc")}>Sort by Spend (Desc)</button>
-      <button onClick={clearSorting}>Clear Sorting</button>
-      {sortedAds.map((ad, index) => (
+      <button onClick={() => setSort("asc")}>Sort by Spend (Asc)</button>
+      <button onClick={() => setSort("desc")}>Sort by Spend (Desc)</button>
+      <button onClick={() => setSort("none")}>Clear Sorting</button>
+      {/* {sortedAds.map((ad, index) => ( */}
+      {filtered.map((ad, index) => (
         <Card ad={ad} key={index} />
       ))}
     </div>
